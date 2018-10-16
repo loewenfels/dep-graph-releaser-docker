@@ -1,0 +1,4 @@
+dashboard-view:2.9.10
+pipeline-stage-view:2.10
+parameterized-trigger:2.35.2
+git:3.9.1
