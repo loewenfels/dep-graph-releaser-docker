@@ -21,19 +21,21 @@ You need to build the docker images once, afterwards it suffices to just call co
    docker build -t dgr-jenkins:v1 ./jenkins2
    ```
 
-## Start/Stop Jenkins    
+## Start/Stop Jenkins & GitLab 
  
-You can use the `compose-docker` file which starts jenkins on ports 8080. 
-Either adjust the ports in the file or start the image `dgr-jenkins` differently
+You can use the `compose-docker` file which starts jenkins on port 8080 and Gitlab on port 9090. 
+Either adjust the ports in the file or start the image `dgr-jenkins:v1` and `gitlab/gitlab-ce:11.2.5-ce.0` and configure the ports via CLI arguments.
  
-1. Start jenkins  
+1. Start jenkins and gitlab
    ```
    compose-docker up -d
    ```
-2. browse to [http://localhost:8080](http://localhost:8080)
+2. Open [http://localhost:8080](http://localhost:8080)
 3. Login with user `admin` and password `admin`
+4. Open [http://localhost:9090](http://localhost:9090)
+5. Specify the password for the user `root`, use `adminadmin` as password
 
-4. Stop Jenkins with 
+6. Stop Jenkins and Gitlab with 
    ```
    docker-compose down
    ```

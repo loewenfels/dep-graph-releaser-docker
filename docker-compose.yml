@@ -1,10 +1,31 @@
-jenkins2:
-  container_name: dgr-jenkins
-  image: dgr-jenkins:v1
-  environment:
-    JAVA_OPTS: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false" # Start jenkins unlocked
-  ports:
-  - "50000:50000"
-  - "8080:8080"
-  volumes:
-  - /var/jenkins_home
+version: '3'
+
+services:
+    jenkins2:
+        container_name: dgr-jenkins
+        image: dgr-jenkins:v1
+        environment:
+            JAVA_OPTS: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false" # Start jenkins unlocked
+        ports:
+        - "50000:50000"
+        - "8080:8080"
+        volumes:
+        - /var/jenkins_home
+
+    gitlab:
+        container_name: dgr-gitlab
+        image: 'gitlab/gitlab-ce:11.2.5-ce.0'
+        restart: always
+        hostname: 'localhost'
+        environment:
+            GITLAB_OMNIBUS_CONFIG: |
+                external_url 'http://localhost:9090'
+
+        ports:
+        - '9090:9090'
+        - '443:443'
+        - '22:22'
+        volumes:
+        - '/srv/gitlab/config:/etc/gitlab'
+        - '/srv/gitlab/logs:/var/log/gitlab'
+        - '/srv/gitlab/data:/var/opt/gitlab'
