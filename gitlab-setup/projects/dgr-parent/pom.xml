@@ -5,8 +5,6 @@
     <artifactId>dgr-parent</artifactId>
     <version>5.6-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>DGR parent</name>
-    <description>parent project of other projects</description>
 
     <dependencyManagement>
         <dependencies>

@@ -11,3 +11,9 @@ end
 puts "using private token: #{ENV['GITLAB_API_PRIVATE_TOKEN']}"
 
 Gitlab.create_project('dgr-parent')
+Gitlab.create_project('l0-multi-with-parent')
+Gitlab.create_project('l0-single-without-parent')
+Gitlab.create_project('l1-multi')
+Gitlab.create_project('l1-single')
+Gitlab.create_project('l2-single')
+Gitlab.create_project('l3-multi')

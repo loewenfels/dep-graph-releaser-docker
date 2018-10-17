@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ch.loewenfels.depgraph</groupId>
+    <artifactId>l1-multi</artifactId>
+    <version>5.4.1.2-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>L1-Multi</name>
+
+    <properties>
+        <l0.single.version>2.3.1-SNAPSHOT</l0.single.version>
+    </properties>
+
+    <modules>
+        <module>l1-multi-a</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>whatever</id>
+            <activation>
+                <property>
+                    <name>shouldNotBe</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <modules>
+                <module>l1-multi-b</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>niceAndShiny</id>
+            <activation>
+                <property>
+                    <name>something</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <modules>
+                <module>l1-multi-c</module>
+            </modules>
+        </profile>
+    </profiles>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>ch.loewenfels.depgraph</groupId>
+                <artifactId>l0-single-without-parent</artifactId>
+                <version>2.3.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.loewenfels.depgraph</groupId>
+                <artifactId>l0-single-without-parent</artifactId>
+                <version>${l0.single.version}</version>
+                <scope>test</scope>
+                <classifier>tests</classifier>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

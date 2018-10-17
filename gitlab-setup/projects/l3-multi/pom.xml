@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>dgr-parent</artifactId>
+        <groupId>ch.loewenfels.depgraph</groupId>
+        <version>5.6-SNAPSHOT</version>
+    </parent>
+    <artifactId>l3-multi</artifactId>
+    <version>1.2u90-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>l3-multi-a</module>
+        <module>l3-multi-b</module>
+    </modules>
+
+    <properties>
+        <l1.multi.c.version>5.4.1.2-SNAPSHOT</l1.multi.c.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>ch.loewenfels.depgraph</groupId>
+                <artifactId>l2-single</artifactId>
+                <version>1-SNAPSHOT</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>ch.loewenfels.depgraph</groupId>
+                <artifactId>l1-multi-a</artifactId>
+                <version>5.4.1.2-SNAPSHOT</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.loewenfels.depgraph</groupId>
+                <artifactId>l1-multi-b</artifactId>
+                <version>5.4.1.2-SNAPSHOT</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.loewenfels.depgraph</groupId>
+                <artifactId>l1-multi-c</artifactId>
+                <version>${l1.multi.c.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
