@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+    gitlabSetup:
+        container_name: dgr-gitlab-setup
+        image: dgr-gitlab-setup:v1
+        env_file: docker.env

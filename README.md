@@ -40,5 +40,24 @@ Either adjust the ports in the file or start the image `dgr-jenkins:v1` and `git
    docker-compose down
    ```
 
+## Configure GitLab
+
+1. Start jenkins and gitlab (if not already started)
+   ```
+   compose-docker up -d
+   ```
+2. open [http://localhost:9090/profile/personal_access_tokens](http://localhost:9090/profile/personal_access_tokens)
+3. create an access-token and replace the existing in gitlab/docker.env
+4. Change working directory: `cd gitlab-setup`
+5. build docker-image
+   ```
+   docker build -t dgr-gitlab-setup:v1 .
+   ```
+6. run setup script for gitlab
+   ```
+   docker-compose up
+   ```
+    
+
 # License
 Licensed under [MIT](https://opensource.org/licenses/MIT)

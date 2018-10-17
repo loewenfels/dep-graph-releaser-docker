@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ch.loewenfels.depgraph</groupId>
+    <artifactId>dgr-parent</artifactId>
+    <version>5.6-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>DGR parent</name>
+    <description>parent project of other projects</description>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <ciManagement>
+        <system>jenkins</system>
+        <url>http://localhost:9090/job/dgr-parent-job</url> <!-- different name on purpose -->
+    </ciManagement>
+
+</project>
+
+
