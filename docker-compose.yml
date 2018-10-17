@@ -20,6 +20,7 @@ services:
         environment:
             GITLAB_OMNIBUS_CONFIG: |
                 external_url 'http://localhost:9090'
+                gitlab_rails['gitlab_default_projects_features_builds'] = false
 
         ports:
         - '9090:9090'
