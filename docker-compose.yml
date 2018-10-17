@@ -1,6 +1,6 @@
 jenkins2:
   container_name: dgr-jenkins
-  image: dgr-jenkins
+  image: dgr-jenkins:v1
   environment:
     JAVA_OPTS: "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false" # Start jenkins unlocked
   ports:

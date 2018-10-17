@@ -10,22 +10,32 @@ features.
 
 # Getting started
 
-1. [Install docker](https://docs.docker.com/install/)
+## Build docker files
+
+You need to build the docker images once, afterwards it suffices to just call compose-docker
+
+1. [Install docker](https://docs.docker.com/install/) (if you don't have it yet)
 2. clone this repo
-3. Build the docker file
+3. Build the jenkins docker file
    ```
-   docker build -t dgr-jenkins:latest .
+   docker build -t dgr-jenkins:v1 ./jenkins2
    ```
-4. Start jenkins with (adjust ports in docker-compose.yml if 8080 is already taken) 
+
+## Start/Stop Jenkins    
+ 
+You can use the `compose-docker` file which starts jenkins on ports 8080. 
+Either adjust the ports in the file or start the image `dgr-jenkins` differently
+ 
+1. Start jenkins  
    ```
    compose-docker up -d
    ```
-5. browser to [http://localhost:8080](http://localhost:8080)
-6. Login with user `admin` and password `admin`
+2. browse to [http://localhost:8080](http://localhost:8080)
+3. Login with user `admin` and password `admin`
 
-7. Stop the image with 
+4. Stop Jenkins with 
    ```
-   docker stop dgr-jenkins
+   docker-compose down
    ```
 
 # License
