@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ch.loewenfels</groupId>
+    <artifactId>dep-graph-releaser-runner-maven</artifactId>
+    <version>1.2.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>ch.loewenfels.depgraph</groupId>
+            <artifactId>dep-graph-releaser-runner</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <mainClass>ch.loewenfels.depgraph.runner.Main</mainClass>
+                    <!--
+                        otherwise we would have to shutdown the private ConnectionPool.executor
+                        and kill the WatchDog threads. They should terminate when the main process stops (should).
+                        See https://github.com/square/okhttp/issues/3957
+                    -->
+                    <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>dependents</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>dependents</argument>
+                                <argument>${gId}</argument>
+                                <argument>${aId}</argument>
+                                <argument>${dir}</argument>
+                                <argument>${relativePathExcludeProjectsRegex}</argument>
+                                <argument>-format=${format}</argument>
+                                <argument>-relativePathToGitRepoRegex=${relativePathToGitRepoRegex}</argument>
+                                <argument>-relativePathToGitRepoReplacement=${relativePathToGitRepoReplacement}</argument>
+                                <argument>-psf=${psf}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>json</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>json</argument>
+                                <argument>${mvnIds}</argument>
+                                <argument>${dir}</argument>
+                                <argument>${json}</argument>
+                                <argument>${updateDependencyJob}</argument>
+                                <argument>${dryRunJob}</argument>
+                                <argument>${remoteRegex}</argument>
+                                <argument>${relativePathExcludeProjectsRegex}</argument>
+                                <argument>${relativePathToGitRepoRegex}</argument>
+                                <argument>${relativePathToGitRepoReplacement}</argument>
+                                <argument>-regexParams=${regexParams}</argument>
+                                <argument>-disableRegex=${disableRegex}</argument>
+                                <argument>-jobMapping=${jobMapping}</argument>
+                                <argument>-commitPrefix=${commitPrefix}</argument>
+                                <argument>-buildWithParamJobs=${buildWithParamJobs}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>releasable</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>releasable</argument>
+                                <argument>${dir}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>update</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>update</argument>
+                                <argument>${pom}</argument>
+                                <argument>${gId}</argument>
+                                <argument>${aId}</argument>
+                                <argument>${newVersion}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

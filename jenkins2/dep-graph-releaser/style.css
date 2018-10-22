@@ -1,0 +1,895 @@
+body,
+textarea {
+    font-family: "Arimo", sans-serif;
+    font-size: 12px;
+    margin: 0;
+}
+
+a,
+a:visited {
+    color: #0063b1;
+}
+a:hover {
+    color: #2196F3;
+}
+
+#gui {
+    display: none;
+    height: 100%;
+    padding-top: 60px;
+}
+
+#menu {
+    padding: 10px;
+    padding-left: 25px;
+    background: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    color: #EEE;
+}
+
+.button {
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 20px;
+    color: #DDD;
+}
+.button .material-icons {
+   float: left;
+   color: #f1eca9;
+}
+
+.button:hover {
+    color: #FFF;
+}
+.button:hover .material-icons {
+    color: #ffed00;
+}
+
+
+.button .text {
+    display: inline-block;
+    padding-top: 5px;
+    padding-left: 4px;
+}
+
+.button.deactivated,
+.button.deactivated .material-icons {
+    color: #CCC;
+    cursor: help;
+}
+
+.button.disabled,
+.button.disabled .material-icons {
+    color: #888;
+    cursor: not-allowed;
+}
+
+#dry {
+    margin-right: 23px;
+}
+#tools .material-icons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+#startOver {
+    color: #b0d1ec;
+    display: none;
+}
+#startOver .material-icons {
+    color: #7ec1f7;
+}
+#startOver:hover {
+    color: #FFF;
+}
+#startOver:hover .material-icons {
+    color: #2196f3;
+}
+
+#user {
+    float: right;
+    cursor: help;
+}
+#user .material-icons {
+    color: #75d075;
+}
+#user.warning .material-icons {
+    color: #e2a35f;
+}
+#user.deactivated .material-icons {
+    color: #e67878;
+}
+
+
+.menuLayer {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-bottom: 2px solid #333;
+    padding: 20px;
+    background-color: #d9eaf7;
+    z-index: 1;
+    -webkit-transition: top .5s ease;
+    transition: top .5s ease;
+    overflow-y: auto;
+}
+@media (max-height:850px) {
+    #config {
+        bottom: 30px;
+    }
+}
+
+.menuLayer.active {
+    visibility: visible;
+    top: 44px;
+}
+
+.menuLayer label.fields {
+    vertical-align: top;
+    padding-top: 3px;
+    width: 190px;
+    margin-right: 10px;
+}
+
+#config input,
+#config textarea {
+    width: 600px;
+    margin-right: 15px;
+}
+#config textarea {
+    height: 100px;
+}
+
+#config div > div {
+    margin-bottom: 10px;
+}
+
+#toolbox .button {
+    background-color: #333;
+    padding: 5px;
+    padding-right: 15px;
+    border-radius: 5px;
+}
+
+.material-icons.char {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 1px;
+    font-family: "Arimo", sans-serif;
+}
+
+
+#pipeline {
+    display: none;
+    height: 100%;
+}
+
+div.level {
+    display: table-cell;
+    height: 100%;
+    padding-right: 45px;
+    padding-left: 25px;
+    border-right: 1px solid #CCC;
+}
+
+.project,
+#loader {
+    border: 1px solid #CCC;
+    background: #fff;
+    margin: 0 auto 20px auto;
+    display: block;
+    width: 300px;
+    padding: 20px 15px;
+    border-radius: 2px 2px 2px 2px;
+    -webkit-box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(0, 0, 0, 0.1) inset;
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+#loader {
+    margin: auto;
+    width: 600px;
+    margin-top: 50px;
+}
+
+#loader .material-icons {
+    vertical-align: middle;
+    color: #008000;
+}
+#loader .material-icons.waiting {
+    color: #000;
+}
+
+
+.submodules {
+    margin-top: 15px;
+}
+
+.submodule .submodules {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.submodule {
+    width: 300px;
+}
+.submodule:last-child {
+    margin-bottom: 0px;
+}
+
+.submodule.withoutCommands {
+    padding: 3px 15px;
+    margin: 5px auto;
+}
+.submodule.withoutCommands.withSubmodules {
+    margin-bottom: 10px;
+}
+
+.submodule.withoutCommands + div.submodule:not(.withoutCommands) {
+    margin-top:20px;
+}
+
+div.title {
+    font-size:1.2em;
+    font-weight: bold;
+    margin-bottom:5px;
+}
+
+.submodule div.title{
+    font-size: 1.1em;
+}
+
+.submodule.withoutCommands div.title {
+    font-size: 1em;
+    font-weight: normal;
+    margin-bottom: 0px;
+}
+
+div.title::after,
+div.command > div.fields::after,
+#menu::after, .button::after,
+#modal .buttons::after {
+    content: '';
+    display: block;
+    clear:both;
+}
+
+.command {
+    margin-top:10px;
+}
+
+.commandTitle {
+    font-weight:bold;
+    margin-bottom: 3px;
+}
+
+.project > div.fields > div {
+    margin-top:5px;
+}
+
+div.fields input {
+    width:150px;
+}
+
+label.fields {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    margin-right: 6px;
+}
+
+label.toggle {
+    position: relative;
+    display: inline-block;
+    width: 35px;
+    height: 20px;
+    float:right;
+}
+label.toggle input {
+    display:none;
+    width: 35px;
+}
+label.toggle .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #AAA;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+label.toggle .slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+label.toggle input:checked + .slider {
+    background-color: #2196F3;
+}
+label.toggle input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(14px);
+    -ms-transform: translateX(14px);
+    transform: translateX(14px);
+}
+
+.command.disabled > .fields > label.toggle .slider,
+label.toggle input:disabled + .slider {
+    background-color: #CDCDCD;
+    cursor: not-allowed;
+}
+input:read-only {
+    color: #888;
+}
+input:disabled {
+    cursor: not-allowed;
+}
+
+.command .state {
+    position: relative;
+    display: none;
+    float: right;
+    border: 1px solid;
+    border-color: #888;
+    color:#AAA;
+    background-color: white;
+    border-radius: 6px;
+    cursor: help;
+    margin-top: -3px;
+     -webkit-box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.2),
+        0 0 4px rgba(0, 1, 0, 0.1) inset;
+    -moz-box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.2),
+        0 0 4px rgba(0, 1, 0, 0.1) inset;
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.2),
+        0 0 4px rgba(0, 1, 0, 0.1) inset;
+}
+
+.command.ready > .fields > .toggle,
+.command.readyToReTrigger > .fields > .toggle,
+.command.readyToRePoll > .fields > .toggle,
+.command.queueing > .fields > .toggle,
+.command.rePolling > .fields > .toggle,
+.command.inProgress > .fields > .toggle,
+.command.succeeded > .fields > .toggle,
+.command.failed > .fields > .toggle,
+.command.timeout > .fields > .toggle,
+.command.disabled > .fields > .toggle {
+    display: none;
+}
+.command.ready > .fields > .state,
+.command.readyToReTrigger > .fields > .state,
+.command.readyToRePoll > .fields > .state,
+.command.queueing > .fields > .state,
+.command.rePolling > .fields > .state,
+.command.inProgress > .fields > .state,
+.command.succeeded > .fields > .state,
+.command.failed > .fields > .state,
+.command.timeout > .fields > .state,
+.command.disabled > .fields > .state {
+    display: inline-block;
+}
+
+.command.readyToReTrigger > .fields > .state .material-icons span::after,
+.contextMenu .reTrigger > .material-icons span::after {
+    content: 'playlist_play';
+}
+
+.command.readyToRePoll > .fields > .state .material-icons span::before,
+.contextMenu .rePoll > .material-icons span::before {
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 9px;
+}
+.command.readyToRePoll > .fields > .state .material-icons span::after,
+.contextMenu .rePoll > .material-icons span::after {
+    content: 'list';
+    display: inline-block;
+    height: 25px;
+    vertical-align: text-bottom;
+    margin-top: -4px;
+    margin-left: -26px;
+    font-size: 24px;
+    -webkit-clip-path: polygon(80% 0, 80% 55%, 61% 55%, 65% 100%, 25% 80%, 25% 0);
+    clip-path: polygon(80% 0, 80% 55%, 61% 55%, 65% 100%, 25% 80%, 25% 0);
+}
+
+.command.queueing > .fields > .state {
+    animation: queueing 1s infinite alternate linear;
+    -webkit-animation: queueing 1s infinite alternate linear;
+    animation-delay: 0.2s;
+}
+@keyframes queueing {
+    from { border-color: #888; color:#AAA; background-color: white;   }
+    to {   border-color: #d88607; color:#dea64e; background-color: #fff2dd;   }
+}
+@-webkit-keyframes queueing {
+    from { border-color: #888; color:#AAA; background-color: white;   }
+    to {   border-color: #d88607; color:#dea64e; background-color: #fff2dd;   }
+}
+.command.queueing > .fields > .state .material-icons span::after,
+.command.ready > .fields > .state .material-icons span::after {
+    content: 'playlist_add';
+}
+
+.command.rePolling > .fields > .state,
+.command.inProgress > .fields > .state {
+    cursor: pointer;
+    animation: inProgress 1.2s infinite alternate ease-out;
+    -webkit-animation: inProgress 1.2s infinite alternate ease-out;
+}
+@keyframes inProgress {
+    from { border-color: #888; color:#AAA; background-color: white;  }
+    to {   border-color: #008000; color:#008000; background-color: #c9fdc9; }
+}
+@-webkit-keyframes inProgress {
+    from { border-color: #888; color:#AAA; background-color: white;  }
+    to {   border-color: #008000; color:#008000; background-color: #c9fdc9; }
+}
+.command.inProgress > .fields > .state .material-icons span::after {
+    content: 'play_arrow';
+}
+
+.command.readyToRePoll .state .material-icons span::before,
+.contextMenu .rePoll > .material-icons span::before,
+.command.rePolling .state,
+.contextMenu .rePollContinue > .material-icons span::after {
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+.command.readyToRePoll .state .material-icons span::before,
+.contextMenu .rePoll > .material-icons span::before,
+.command.rePolling > .fields > .state .material-icons span::after,
+.contextMenu .rePollContinue > .material-icons span::after {
+    content: 'reply';
+}
+
+.command.succeeded > .fields > .state .material-icons span::after,
+.contextMenu .succeeded > .material-icons span::after,
+.contextMenu .succeededContinue > .material-icons span::after {
+    content: 'check';
+}
+.command.succeeded > .fields > .state {
+    cursor: pointer;
+    border-color: #008000;
+    color: #008000;
+    background-color: #c9fdc9;
+    animation: none;
+    -webkit-animation: none;
+}
+
+.command.failed > .fields > .state .material-icons span::after {
+    content: 'error';
+}
+.command.failed > .fields > .state,
+.command.timeout > .fields > .state {
+    cursor: pointer;
+    border-color: #a01c1c;
+    color: #a01c1c;
+    background-color: #f7dede;
+    animation: none;
+    -webkit-animation: none;
+}
+
+.command.timeout > .fields > .state .material-icons span::after {
+    content: 'alarm';
+}
+
+.command.disabled > .fields > .state .material-icons span::after {
+    content: 'do_not_disturb';
+    color: #a01c1c;
+}
+.command.disabled > .fields > .state .material-icons {
+    font-size: 21px;
+    padding: 1px;
+    width: 21px;
+    height: 21px;
+}
+
+
+.command.inProgress > .fields > .state .material-icons,
+.command.succeeded > .fields > .state .material-icons,
+.command.failed > .fields > .state .material-icons{
+    font-size: 20px;
+    padding: 2px;
+    width: 20px;
+    height: 20px;
+}
+
+.contextMenu {
+    position: absolute;
+    background: #FFF;
+    border: 1px solid #AAA;
+    border-radius: 6px;
+    visibility: hidden;
+    display: inline-block;
+    z-index: 1;
+    min-width: 135px;
+}
+.fields .contextMenu {
+    min-width: 280px;
+}
+.contextMenu div {
+    cursor: pointer;
+    padding: 5px;
+    padding-right: 20px;
+}
+.contextMenu div:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.contextMenu div:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.contextMenu div:hover {
+    background-color: #EFEFEF;
+}
+.contextMenu div.disabled,
+ .contextMenu div.disabled .material-icons {
+    cursor: not-allowed;
+    color: #CCC;
+}
+.contextMenu div > span {
+    vertical-align: middle;
+    margin-left: 2px;
+}
+.contextMenu .material-icons {
+    font-size: 20px;
+    padding: 2px;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+.contextMenu .succeeded .material-icons {
+    color: #008000;
+}
+.contextMenu .deactivated .material-icons,
+ .contextMenu .rePoll .material-icons {
+    color: #666;
+}
+.contextMenu .deactivated > .material-icons span::after {
+    content: 'power_off';
+}
+.contextMenu .gitClone > .material-icons {
+    color: #f34f29;
+}
+.contextMenu .reTrigger > .material-icons,
+.contextMenu .succeededContinue > .material-icons,
+.contextMenu .rePollContinue > .material-icons {
+    color: #e6930d;
+}
+.contextMenu .reTrigger > .material-icons{
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+}
+.contextMenu .succeededContinue > .material-icons span::before {
+    content: 'play_arrow';
+    font-size: 10px;
+    margin-left: 11px;
+}
+.contextMenu .succeededContinue > .material-icons span::after {
+    margin-left: -21px;
+}
+
+.contextMenu .rePollContinue > .material-icons span::before {
+    content: 'play_arrow';
+    font-size: 10px;
+    margin-left: 9px;
+}
+.contextMenu .rePollContinue > .material-icons span::after{
+    display: inline-block;
+    height: 24px;
+    vertical-align: text-bottom;
+    margin-top: -4px;
+    margin-left: -16px;
+}
+
+#poweredBy,
+#status,
+#messages {
+    position: fixed;
+    left: 0;
+    bottom: 0px;
+    max-height: 40%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+#poweredBy,
+#status {
+    bottom: 10px;
+}
+#status {
+    display: inline-block;
+    bottom: 10px;
+    left: 420px;
+    cursor: help;
+}
+#messages {
+    right: 0px;
+    overflow-y: auto;
+}
+
+.minimized {
+    position: fixed;
+    border: 2px solid;
+    padding: 5px;
+    z-index: 1;
+    background-color: #FFF;
+    border-radius: 8px;
+    cursor: pointer;
+    display: none;
+}
+
+#messages > div {
+    border: 2px solid;
+    border-radius: 6px;
+    padding: 10px;
+    padding-left: 8px;
+    margin-top: 20px;
+}
+#messages > div:nth-child(2) {
+    margin-top: 0px;
+}
+#messages > div:last-child {
+    margin-bottom: 10px;
+}
+
+#messages .material-icons {
+    display: block;
+    position: absolute;
+    margin-top: -5px;
+}
+#messages .error .material-icons {
+    margin-top: -4px;
+}
+
+#messages .timestamp {
+    margin-top: -1px;
+    font-size: 10px;
+    float: right;
+    margin-right: 30px;
+}
+#messages .text {
+    padding-left: 33px;
+}
+
+#messages .error {
+    border-color: #a01c1c;
+    background-color: #f7dede;
+    color: #a01c1c;
+    font-size: 1.2em;
+}
+#messages .error .material-icons {
+    color: #a01c1c;
+}
+
+#messages .warning {
+    border-color: #d6c500;
+    background-color: #fdfcd1;
+    color: #272525;
+    font-size: 1.1em;
+}
+
+#messages .warning .material-icons {
+    color: #caa900;
+}
+
+#warningsMinimized {
+    top: 50px;
+    left: 5px;
+    color: #caa900;
+    border-color: #caa900;
+}
+
+#messages .info {
+    border-color: #a3a3ff;
+    background-color: #dae0ff;
+    color: #272525;
+    font-size: 1em;
+}
+
+#messages .info .material-icons {
+    color: #5454d4;
+}
+
+#infosMinimized {
+    top: 93px;
+    left: 5px;
+    color: #5454d4;
+    border-color: #5454d4;
+}
+
+#messages .success {
+    border-color: #008000;
+    background-color: #c9fdc9;
+    color: #272525;
+    font-size: 1em;
+}
+
+#messages .success .material-icons {
+    color: #008000;
+}
+
+
+.close {
+   position: absolute;
+   right: 27px;
+   margin-top: -3px;
+   opacity: 0.3;
+   cursor: pointer;
+   display: block;
+   width: 14px;
+   height: 14px;
+}
+.close:hover {
+    opacity: 1;
+}
+
+.close:before, .close:after {
+    position: absolute;
+    left: 7px;
+    content: ' ';
+    height: 15px;
+    width: 2px;
+    background-color: #333;
+}
+.close:before {
+    transform: rotate(45deg);
+}
+.close:after {
+    transform: rotate(-45deg);
+}
+
+#messages .holder {
+    background-color: #DDD;
+    border-color: #999;
+    cursor: pointer;
+}
+#messages .holder > div {
+    display: none;
+}
+
+
+#hideMessages {
+    position: fixed;
+    right: 20px;
+    margin-top: -20px;
+}
+
+#hideMessages .material-icons {
+    font-size: 20px;
+    color: #AAA;
+}
+#hideMessages .text {
+    color: #AAA;
+    padding-top: 0;
+    padding-left: 25px;
+}
+
+#hideMessages:hover .material-icons {
+    color: #2196f3
+}
+#hideMessages:hover .text {
+    color: #000;
+}
+
+#hideMessages:first-child:nth-last-child(1) {
+    display: none;
+}
+
+#modals:not(:empty) {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: #AAAAAA90;
+}
+#modals .box {
+    position: absolute;
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: #FFF;
+    padding: 20px;
+    padding-right: 30px;
+    padding-bottom: 25px;
+    max-width: 800px;
+    -webkit-box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(0, 0, 0, 0.1) inset;
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(0, 0, 0, 0.1) inset;
+}
+
+#modals .text {
+    dispay: table
+}
+#modals .text .material-icons {
+    display: table-cell;
+    padding-right: 15px;
+    color: #2196F3;
+}
+#modals .text div {
+    display: table-cell;
+    vertical-align: top;
+}
+
+#modals .buttons {
+    margin-top: 15px;
+    float: right;
+}
+#modals .buttons span {
+    border: 1px solid #AAA;
+    border-radius: 3px;
+    background-color: #EEE;
+    margin-left: 13px;
+    padding: 6px 10px;
+    cursor: pointer;
+    max-width: 800px;
+    -webkit-box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.3),
+        0 0 6px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.3),
+        0 0 6px rgba(0, 0, 0, 0.1) inset;
+    box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.3),
+        0 0 6px rgba(0, 0, 0, 0.1) inset;
+}
+
+#modals .output textarea {
+    width: 500px;
+    height: 400px;
+    margin-top: 10px;
+}
+#modals .text .output .material-icons {
+    padding-right: 5px;
+}
+#modals .text .output span {
+    vertical-align: middle;
+    display: table-cell;
+}

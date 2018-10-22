@@ -105,6 +105,10 @@ COPY /configs/jobs/${dgrWorkspace}.xml "$JENKINS_HOME"/jobs/${dgrWorkspace}/conf
 # Create build file structure
 RUN mkdir -p "$JENKINS_HOME"/jobs/${dgrWorkspace}/builds/
 
+##### set up depenendent graph releaser
+RUN mkdir -p "$JENKINS_HOME"/userContent/dep-graph-releaser/
+COPY /dep-graph-releaser/* "$JENKINS_HOME"/userContent/dep-graph-releaser/
+
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
 VOLUME $JENKINS_HOME
