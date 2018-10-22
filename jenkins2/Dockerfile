@@ -73,9 +73,6 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 COPY tini-shim.sh /bin/tini
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
 
-# add the admin user
-COPY /configs/users "$JENKINS_HOME"/users/
-
 # from a derived Dockerfile, can use `RUN plugins.sh active.txt` to setup /usr/share/jenkins/ref/plugins from a support bundle
 #COPY plugins.sh /usr/local/bin/plugins.sh
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
@@ -85,8 +82,13 @@ COPY /configs/plugins.txt /usr/share/jenkins/ref/plugins.txt
 # Add/Remove  the plugins you want
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
+WORKDIR "$JENKINS_HOME"
+
+# add the admin user
+COPY /configs/users ./users/
+
 # Add the main config file to the jenkins path
-COPY /configs/jenkins_config.xml "$JENKINS_HOME"/config.xml
+COPY /configs/home/* ./
 
 ##### create jobs ----------------------
 
@@ -94,20 +96,20 @@ COPY /configs/jenkins_config.xml "$JENKINS_HOME"/config.xml
 ARG dgrWorkspace="dgr-workspace"
 
 # Create the job workspaces
-RUN mkdir -p "$JENKINS_HOME"/workspace/${dgrWorkspace}/
+RUN mkdir -p ./workspace/${dgrWorkspace}/
 
 # Create the jobs folder recursively
-RUN mkdir -p "$JENKINS_HOME"/jobs/${dgrWorkspace}/
+RUN mkdir -p ./jobs/${dgrWorkspace}/
 
 # Add the custom configs to the container
-COPY /configs/jobs/${dgrWorkspace}.xml "$JENKINS_HOME"/jobs/${dgrWorkspace}/config.xml
+COPY /configs/jobs/${dgrWorkspace}.xml ./jobs/${dgrWorkspace}/config.xml
 
 # Create build file structure
-RUN mkdir -p "$JENKINS_HOME"/jobs/${dgrWorkspace}/builds/
+RUN mkdir -p ./jobs/${dgrWorkspace}/builds/
 
 ##### set up depenendent graph releaser
-RUN mkdir -p "$JENKINS_HOME"/userContent/dep-graph-releaser/
-COPY /dep-graph-releaser/* "$JENKINS_HOME"/userContent/dep-graph-releaser/
+RUN mkdir -p ./userContent/dep-graph-releaser/
+COPY /dep-graph-releaser/* ./userContent/dep-graph-releaser/
 
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
