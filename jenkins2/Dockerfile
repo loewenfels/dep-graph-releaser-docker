@@ -88,6 +88,23 @@ RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 # Add the main config file to the jenkins path
 COPY /configs/jenkins_config.xml "$JENKINS_HOME"/config.xml
 
+##### create jobs ----------------------
+
+# Name the jobs
+ARG dgrWorkspace="dgr-workspace"
+
+# Create the job workspaces
+RUN mkdir -p "$JENKINS_HOME"/workspace/${dgrWorkspace}/
+
+# Create the jobs folder recursively
+RUN mkdir -p "$JENKINS_HOME"/jobs/${dgrWorkspace}/
+
+# Add the custom configs to the container
+COPY /configs/jobs/${dgrWorkspace}.xml "$JENKINS_HOME"/jobs/${dgrWorkspace}/config.xml
+
+# Create build file structure
+RUN mkdir -p "$JENKINS_HOME"/jobs/${dgrWorkspace}/builds/
+
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
 VOLUME $JENKINS_HOME

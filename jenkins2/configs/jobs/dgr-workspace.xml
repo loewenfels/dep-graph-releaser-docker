@@ -1,0 +1,182 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.25">
+  <actions>
+    <org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction plugin="workflow-multibranch@2.20">
+      <jobPropertyDescriptors>
+        <string>hudson.model.ParametersDefinitionProperty</string>
+      </jobPropertyDescriptors>
+    </org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>-1</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.29">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>artifactAndGroupId</name>
+          <description>root projects which shall be released</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>dgr-parent - - - - - - - - - - - - groupId: ch.loewenfels.depgraph</string>
+              <string>l0-single-without-parent - - - - - groupId: ch.loewenfels.depgraph</string>
+              <string>l0-multi-with-parent - - - - - - - groupId: ch.loewenfels.depgraph</string>
+              <string>l1-single - - - - - - - - - - - -  groupId: ch.loewenfels.depgraph</string>
+              <string>l1-multi - - - - - - - - - - - - - groupId: ch.loewenfels.depgraph</string>
+              <string>l2-single - - - - - - - - - - - -  groupId: ch.loewenfels.depgraph</string>
+              <string>l3-multi - - - - - - - - - - - - - groupId: ch.loewenfels.depgraph</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>skipCheckout</name>
+          <description>If checked we are not going to chekout projects (makes sense if you just want to see dependencies or if you have just checked out projects in the last build)</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>disableReleaseFor</name>
+          <description>Regex which specifies which projects should not be released (and are thus disabled)</description>
+          <defaultValue>.*disableReleaseCommandForMatchingProjects</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.59">
+    <script>/*properties([parameters([
+    choice(name: &apos;artifactAndGroupId&apos;, choices: [&apos;a list with projects we want to release see dgr-command releasable&apos;], description: &apos;the content of the release.json file to publish&apos;),
+    booleanParam(name: &apos;skipCheckout&apos;, defaultValue: true, description: &apos;If checked we are not going to chekout projects (makes sense if you just want to see dependencies or if you have just checked out projects in the last build)&apos;),
+    string(name: &apos;disableReleaseFor&apos;, defaultValue: &apos;.*disableReleaseCommandForMatchingProjects&apos;, description: &apos;Regex which specifies which projects should not be released (and are thus disabled)&apos;),
+])])*/
+
+def repos = [
+    &apos;root/dgr-parent&apos;,
+    &apos;root/l0-multi-with-parent&apos;,
+    &apos;root/l0-single-without-parent&apos;,
+    &apos;root/l1-multi&apos;,
+    &apos;root/l1-single&apos;,
+    &apos;root/l2-single&apos;,
+    &apos;root/l3-multi&apos;,
+]
+def repoGroups = repos.collate(repos.size().intdiv(5))
+
+def (tmpArtifactId, groupId) = params.artifactAndGroupId.split( &apos;groupId: &apos; )
+def artifactId = tmpArtifactId.replaceAll(&quot; -&quot;, &quot;&quot;).trim()
+currentBuild.displayName = currentBuild.displayName + &quot; &quot; + artifactId
+def fileName = &quot;release-${BUILD_NUMBER}.json&quot;
+if (&quot;$groupId:$artifactId&quot; ==~ params.disableReleaseFor) {
+   error &quot;You have to adjust the parameter disableReleaseFor ==&gt; currently it would disable the root project as well which does not make sense.&quot; +
+    &quot;\nroot project: $groupId:$artifactId &quot; +
+    &quot;\ndisableReleaseFor: ${params.disableReleaseFor}&quot;
+}
+
+node(&apos;master&apos;) {
+    echo &quot;$env.BUILD_URL&quot;
+    def host = &quot;https://${getJenkinsMaster()}&quot;
+
+    stage(&apos;checkout&apos;) {
+       if (!params.skipCheckout) {
+            echo &quot;clean workspace, delete all content&quot;
+            sh &quot;find * -maxdepth 0 -exec rm -r {} \\; 2&gt; /dev/null || true&quot;
+            def consumers = (0..&lt;repoGroups.size()).toList().collectEntries{[&quot;consumer $it&quot; : consumer(repoGroups[it])]}
+            parallel([failFast: true] + consumers)
+        } else {
+            echo &quot;skipCheckout was checked, skipping checkout.&quot;
+            currentBuild.displayName = currentBuild.displayName + &quot; skipCheckout&quot;
+        }
+    }
+
+    stage(&apos;fetch pom-runner&apos;) {
+        def jenkinsPom = &apos;jenkins.pom&apos;
+        sh &quot;rm $jenkinsPom 2&gt; /dev/null || true&quot; // we ignore
+        sh &quot;wget $host/userContent/dep-graph-releaser/$jenkinsPom&quot;
+    }
+
+    stage(&apos;analyse&apos;) {
+    	def mvnHome = tool &apos;maven-3.5&apos;
+
+        def jobMapping = /
+            ch.loewenfels.depgraph:dgr-parent=parent-pom
+            /.stripIndent()
+
+    	sh &quot;&apos;$mvnHome/bin/mvn&apos; -f=jenkins.pom exec:java@json&quot; +
+    		&quot; -DgId=$groupId&quot; +
+    		&quot; -DaId=$artifactId&quot; +
+    		&quot; -Ddir=./&quot; +
+    		&quot; -Djson=./release-${BUILD_NUMBER}.json&quot; +
+    		&quot; -DupdateDependencyJob=dgr-updater&quot; +
+    		&quot; -DdryRunJob=dgr-dry-run&quot; +
+    		&quot; -DremoteRegex=\&quot;&quot; +
+    		&quot; -DrelativePathExcludeProjectsRegex=\&quot;[^/]+/[^/]+/.+\&quot;&quot; +
+    		&quot; -DrelativePathToGitRepoRegex=\&quot;^(.*)/\\\$\&quot;&quot; +
+    		&quot; -DrelativePathToGitRepoReplacement=\&quot;ssh://repoDomain/\\\$1\&quot;&quot; +
+    		&quot; -DregexParams=\&quot;\&quot;&quot; +
+    		&quot; -DdisableRegex=\&quot;${params.disableReleaseFor}\&quot;&quot; +
+    		&quot; -DjobMapping=\&quot;$jobMapping\&quot;&quot; +
+            &quot; -buildWithParamJobs=\&quot;\&quot;&quot;
+    }
+
+    stage(&apos;link&apos;) {
+        archiveArtifacts artifacts: fileName, fingerprint: true
+        def url = getPipelineUrl(host, fileName)
+        //images which can be used https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16
+        manager.addBadge(&quot;text.gif&quot;, &quot;Pipeline&quot;, url)
+        //images which can be used https://github.com/jenkinsci/jenkins/blob/master/war/src/main/webapp/images/48x48
+        manager.createSummary(&quot;document.gif&quot;).appendText(&quot;&lt;h2&gt;&lt;a href=\&quot;$url\&quot;&gt;Pipeline&lt;/a&gt;&lt;/h2&gt;&quot;, false, false, false, &quot;blue&quot;)
+    }
+
+    stage(&apos;cleanup&apos;) {
+        sh &quot;rm $fileName&quot;
+    }
+}
+
+def consumer(List&lt;String&gt; repos) {
+    return {
+       repos.each {
+           checkoutRepo(it)
+       }
+    }
+}
+
+def checkoutRepo(repo) {
+    checkout(
+        changelog: false,
+        poll: false,
+        scm: [$class: &apos;GitSCM&apos;,
+            branches: [[name: &apos;refs/heads/master&apos;]],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [
+                [$class: &apos;CloneOption&apos;, depth: 0, honorRefspec: true, noTags: true, reference: &apos;&apos;, shallow: true],
+                [$class: &apos;RelativeTargetDirectory&apos;, relativeTargetDir: repo]
+            ],
+            submoduleCfg: [],
+            userRemoteConfigs: [
+                [credentialsId: &apos;02eeb9b4-0bf0-4510-b504-94e026120a47&apos;, name: &apos;origin&apos;, refspec: &apos;+refs/heads/master:refs/remotes/origin/master&apos;, url: &quot;http://root@host.docker.internal/$repo&quot;]
+            ]
+        ]
+    )
+}
+
+String getJenkinsMaster() {
+    return &quot;http://localhost:8080&quot;
+}
+
+String getPipelineUrl(String host, String fileName) {
+    return &quot;$host/userContent/dep-graph-releaser/index.html#../../job/${JOB_NAME}/${BUILD_NUMBER}/artifact/$fileName&amp;publishJob=job/dgr-publisher&quot;
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
