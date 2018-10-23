@@ -1010,12 +1010,13 @@
       var message = 'The publish job URL does not start with https but contains ://';
       throw IllegalArgumentException_init(message.toString());
     }
-    var prefix = window.location.protocol + '//' + window.location.hostname + '/';
+    var port = !isBlank(window.location.port) ? ':' + window.location.port : '';
+    var prefix = window.location.protocol + '//' + window.location.hostname + port + '/';
     if (contains(possiblyRelativePublishJobUrl, '://')) {
       tmp$ = possiblyRelativePublishJobUrl;
     }
      else {
-      if (!equals(window.location.protocol, 'https:')) {
+      if (!(equals(window.location.protocol, 'https:') || equals(window.location.hostname, 'localhost'))) {
         var message_0 = 'The host needs to use the https protocol if publishJob is defined as relative path.';
         throw IllegalArgumentException_init(message_0.toString());
       }
@@ -2491,7 +2492,7 @@
        else {
         this$Menu.createNotification_0('Process ' + processName + ' failed :(');
         Messages$Companion_getInstance().showError_61zpoe$(trimMargin('\n' + "                    |Process '" + processName + "' ended with failure :(" + '\n' + '                    |At least one job failed. Check errors, fix them and then you can re-trigger the failed jobs, the pipeline respectively, by clicking on the release button (you might have to delete git tags and remove artifacts if they have already been created).' + '\n' + '                    |' + '\n' + '                    |Please report a bug at ' + GITHUB_NEW_ISSUE + ' in case a job failed due to an error in dep-graph-releaser.' + '\n' + '                    '));
-        buttonText.innerText = 'Re-trigger failed Jobs';
+        buttonText.innerText = "Resume '" + processName + "'";
         button.title = "Continue with the process '" + processName + "' by re-processing previously failed projects.";
       }
       return Unit;

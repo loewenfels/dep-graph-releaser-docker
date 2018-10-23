@@ -77,39 +77,15 @@ ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins.sh"]
 #COPY plugins.sh /usr/local/bin/plugins.sh
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 
-COPY /configs/plugins.txt /usr/share/jenkins/ref/plugins.txt
+COPY /plugins.txt /usr/share/jenkins/ref/plugins.txt
 
 # Add/Remove  the plugins you want
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
 WORKDIR "$JENKINS_HOME"
 
-# add the admin user
-COPY /configs/users ./users/
-
-# Add the main config file to the jenkins path
-COPY /configs/home/* ./
-
-##### create jobs ----------------------
-
-# Name the jobs
-ARG dgrWorkspace="dgr-workspace"
-
-# Create the job workspaces
-RUN mkdir -p ./workspace/${dgrWorkspace}/
-
-# Create the jobs folder recursively
-RUN mkdir -p ./jobs/${dgrWorkspace}/
-
-# Add the custom configs to the container
-COPY /configs/jobs/${dgrWorkspace}.xml ./jobs/${dgrWorkspace}/config.xml
-
-# Create build file structure
-RUN mkdir -p ./jobs/${dgrWorkspace}/builds/
-
-##### set up depenendent graph releaser
-RUN mkdir -p ./userContent/dep-graph-releaser/
-COPY /dep-graph-releaser/* ./userContent/dep-graph-releaser/
+COPY --chown=root:root /root/ ./
+COPY --chown=jenkins:jenkins /jenkins/ ./
 
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades

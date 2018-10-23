@@ -83,7 +83,7 @@ if (&quot;$groupId:$artifactId&quot; ==~ params.disableReleaseFor) {
 
 node(&apos;master&apos;) {
     echo &quot;$env.BUILD_URL&quot;
-    def host = &quot;https://${getJenkinsMaster()}&quot;
+    def host = getJenkinsMaster()
 
     stage(&apos;checkout&apos;) {
        if (!params.skipCheckout) {
@@ -106,10 +106,6 @@ node(&apos;master&apos;) {
     stage(&apos;analyse&apos;) {
     	def mvnHome = tool &apos;maven-3.5&apos;
 
-        def jobMapping = /
-            ch.loewenfels.depgraph:dgr-parent=parent-pom
-            /.stripIndent()
-
     	sh &quot;&apos;$mvnHome/bin/mvn&apos; -f=jenkins.pom exec:java@json&quot; +
     		&quot; -DgId=$groupId&quot; +
     		&quot; -DaId=$artifactId&quot; +
@@ -117,14 +113,15 @@ node(&apos;master&apos;) {
     		&quot; -Djson=./release-${BUILD_NUMBER}.json&quot; +
     		&quot; -DupdateDependencyJob=dgr-updater&quot; +
     		&quot; -DdryRunJob=dgr-dry-run&quot; +
-    		&quot; -DremoteRegex=\&quot;&quot; +
+    		&quot; -DremoteRegex=\&quot;\&quot;&quot; +
     		&quot; -DrelativePathExcludeProjectsRegex=\&quot;[^/]+/[^/]+/.+\&quot;&quot; +
     		&quot; -DrelativePathToGitRepoRegex=\&quot;^(.*)/\\\$\&quot;&quot; +
-    		&quot; -DrelativePathToGitRepoReplacement=\&quot;ssh://repoDomain/\\\$1\&quot;&quot; +
+    		&quot; -DrelativePathToGitRepoReplacement=\&quot;ssh://localhost:9090/\\\$1\&quot;&quot; +
     		&quot; -DregexParams=\&quot;\&quot;&quot; +
     		&quot; -DdisableRegex=\&quot;${params.disableReleaseFor}\&quot;&quot; +
-    		&quot; -DjobMapping=\&quot;$jobMapping\&quot;&quot; +
-            &quot; -buildWithParamJobs=\&quot;\&quot;&quot;
+    		&quot; -DjobMapping=\&quot; ch.loewenfels.depgraph:dgr-parent=parent-pom\&quot;&quot; +
+            &quot; -DbuildWithParamJobs=\&quot;\&quot;&quot; +
+            &quot; -Dmaven.repo.remote=https://jcenter.bintray.com&quot;
     }
 
     stage(&apos;link&apos;) {
@@ -162,7 +159,7 @@ def checkoutRepo(repo) {
             ],
             submoduleCfg: [],
             userRemoteConfigs: [
-                [credentialsId: &apos;02eeb9b4-0bf0-4510-b504-94e026120a47&apos;, name: &apos;origin&apos;, refspec: &apos;+refs/heads/master:refs/remotes/origin/master&apos;, url: &quot;http://root@host.docker.internal/$repo&quot;]
+                [credentialsId: &apos;02eeb9b4-0bf0-4510-b504-94e026120a47&apos;, name: &apos;origin&apos;, refspec: &apos;+refs/heads/master:refs/remotes/origin/master&apos;, url: &quot;http://root@localhost:9090/$repo&quot;]
             ]
         ]
     )
