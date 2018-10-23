@@ -116,7 +116,7 @@ node(&apos;master&apos;) {
     		&quot; -DremoteRegex=\&quot;\&quot;&quot; +
     		&quot; -DrelativePathExcludeProjectsRegex=\&quot;[^/]+/[^/]+/.+\&quot;&quot; +
     		&quot; -DrelativePathToGitRepoRegex=\&quot;^(.*)/\\\$\&quot;&quot; +
-    		&quot; -DrelativePathToGitRepoReplacement=\&quot;ssh://localhost:9090/\\\$1\&quot;&quot; +
+    		&quot; -DrelativePathToGitRepoReplacement=\&quot;ssh://host.docker.internal:9090/\\\$1\&quot;&quot; +
     		&quot; -DregexParams=\&quot;\&quot;&quot; +
     		&quot; -DdisableRegex=\&quot;${params.disableReleaseFor}\&quot;&quot; +
     		&quot; -DjobMapping=\&quot; ch.loewenfels.depgraph:dgr-parent=parent-pom\&quot;&quot; +
@@ -159,7 +159,7 @@ def checkoutRepo(repo) {
             ],
             submoduleCfg: [],
             userRemoteConfigs: [
-                [credentialsId: &apos;375e6b7a-6a88-4d90-8d75-4b243f771d7a&apos;, name: &apos;origin&apos;, refspec: &apos;+refs/heads/master:refs/remotes/origin/master&apos;, url: &quot;http://root@localhost:9090/$repo&quot;]
+                [credentialsId: &apos;375e6b7a-6a88-4d90-8d75-4b243f771d7a&apos;, name: &apos;origin&apos;, refspec: &apos;+refs/heads/master:refs/remotes/origin/master&apos;, url: &quot;http://root@host.docker.internal:9090/$repo&quot;]
             ]
         ]
     )
