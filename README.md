@@ -35,12 +35,12 @@ Either adjust the ports in the file or start the image `dgr-jenkins:v1` and `git
 4. Open [http://localhost:9090](http://localhost:9090)
 5. Specify the password for the user `root`, use `adminadmin` as password
 
-6. Stop Jenkins and Gitlab with 
-   ```
-   docker-compose down
-   ```
+To stop Jenkins and GitLab it suffices to invoke the following command: 
+```
+docker-compose down
+```
 
-## Configure GitLab
+## Configure GitLab Repositories
 
 1. Start jenkins and gitlab (if not already started)
    ```

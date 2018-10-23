@@ -159,7 +159,7 @@ def checkoutRepo(repo) {
             ],
             submoduleCfg: [],
             userRemoteConfigs: [
-                [credentialsId: &apos;02eeb9b4-0bf0-4510-b504-94e026120a47&apos;, name: &apos;origin&apos;, refspec: &apos;+refs/heads/master:refs/remotes/origin/master&apos;, url: &quot;http://root@localhost:9090/$repo&quot;]
+                [credentialsId: &apos;375e6b7a-6a88-4d90-8d75-4b243f771d7a&apos;, name: &apos;origin&apos;, refspec: &apos;+refs/heads/master:refs/remotes/origin/master&apos;, url: &quot;http://root@localhost:9090/$repo&quot;]
             ]
         ]
     )
